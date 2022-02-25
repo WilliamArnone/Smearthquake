@@ -13,9 +13,9 @@ end
 
 function love.load()
     --love.window.setFullscreen( true )
-    lume = require "lume"
-    Object = require "classic"
-    Camera = require 'Camera'
+    lume = require "libraries.lume"
+    Object = require "libraries.classic"
+    Camera = require 'libraries.Camera'
 end
 
 function love.update(dt)
