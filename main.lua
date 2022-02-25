@@ -14,7 +14,8 @@ end
 function love.load()
     --love.window.setFullscreen( true )
     lume = require "lume"
-    Object = require "classic" 
+    Object = require "classic"
+    Camera = require 'Camera'
 end
 
 function love.update(dt)
@@ -35,7 +36,7 @@ function love.errorhandler(msg)
     ---@diagnostic disable-next-line: undefined-global
     if lldebugger then
         ---@diagnostic disable-next-line: undefined-global
-        lldebugger.start() -- Add this
+        lldebugger.start()
         error(msg, 2)
     else
         return love_errorhandler(msg)
