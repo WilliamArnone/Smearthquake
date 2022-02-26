@@ -8,26 +8,25 @@ if launch_type == "test" or launch_type == "debug" then
     end
 end
 
-
-
-
 function love.load()
     --love.window.setFullscreen( true )
     lume = require "libraries.lume"
     Object = require "libraries.classic"
     Camera = require 'libraries.Camera'
+    require "class.game"
+    require "class.gameObject"
+
+    game = Game()
 end
 
 function love.update(dt)
-    
+    game:update(dt)
 end
 
 function love.draw()
-    love.graphics.print("Hello Word")
+    game:draw()
+    --love.graphics.print("Hello Word")
 end
-
-
-
 
 ---@diagnostic disable-next-line: undefined-field
 local love_errorhandler = love.errhand
@@ -42,3 +41,4 @@ function love.errorhandler(msg)
         return love_errorhandler(msg)
     end
 end
+
