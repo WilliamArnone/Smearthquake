@@ -45,6 +45,11 @@ function Game:update(dt)
         if placed:isDropped() then
             table.remove(self.placed, i)
         end
+        if placed:is(Shelf) then
+            for index, item in ipairs(placed.items) do
+                self.happiness = self.happiness + item.happiness
+            end
+        end
     end
     
     --update grabbed
@@ -65,6 +70,11 @@ function Game:draw()
     --drawobjs
     for index, item in ipairs(self.placed) do
         item:draw(earthquake, 0.5, 0.5, 0.5)
+        if item:is(Shelf) then
+            for _, dec in ipairs(item.items) do
+                dec:draw(earthquake, 0, 1, 1)
+            end
+        end
     end
 
     for index, box in ipairs(self.boxes) do
@@ -107,11 +117,31 @@ function Game:mousepressed(x, y, button)
     for i = #self.placed, 1, -1 do
         local placed = self.placed[i]
         if placed:isPointInside(x, y) then
+            if placed:is(Shelf)then
+                return
+                -- for i = #placed.items, 1, -1 do
+                --     table.insert(self.placed, placed.items[i])
+                --     placed.items[i]:place(false)
+                -- end
+                -- table.remove(placed.items, i)
+            end
             self.dragging.object=placed
             table.remove(self.placed, i)
             self.dragging.dx = placed.x - x
             self.dragging.dy = placed.y - y
             return
+        else
+            if placed:is(Shelf) then
+                for index, item in ipairs(placed.items) do
+                    if item:isPointInside(x, y) then
+                        self.dragging.object=item
+                        table.remove(placed.items, index)
+                        self.dragging.dx = item.x - x
+                        self.dragging.dy = item.y - y
+                        return
+                    end
+                end
+            end
         end
     end
     if self.computer:isPointInside(x, y) then
@@ -122,14 +152,19 @@ end
 function Game:mousereleased(x, y, button)
     if self.dragging.object then
         if self.dragging.proj then
-            self.dragging.object:place(true, self.dragging.proj.x, self.dragging.proj.y)
+            if self.dragging.object:is(Decoration)then
+                self.dragging.proj.shelf:add(self.dragging.object, self.dragging.proj.x)
+            else
+                self.dragging.object:place(true, self.dragging.proj.x, self.dragging.proj.y)
+                table.insert(self.placed, self.dragging.object)
+            end
         else
             if self.dragging.object:is(Shelf) then
                 return
             end
             self.dragging.object:place(false)
+            table.insert(self.placed, self.dragging.object)
         end
-        table.insert(self.placed, self.dragging.object)
         self.dragging.object = nil
     end
 end

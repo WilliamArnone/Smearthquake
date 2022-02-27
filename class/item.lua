@@ -4,7 +4,7 @@ function Item:new(x, y, width, height, price, happiness, instability, img, sound
     self.x = x
     self.y = y
     self.width = width
-    self. height = height
+    self.height = height
     self.happiness = happiness
     self.total_instability = instability
     self.instability = 0

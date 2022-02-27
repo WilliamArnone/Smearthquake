@@ -6,7 +6,7 @@ function Decoration:canBePlaced()
         if item:is(Shelf) and self:collide(item) then
             local x = item:availableX(self)
             if x then
-                return {x = x, y = item.y-self.height}
+                return {x = x, y = item.y-self.height, shelf = item}
             end
         end
     end

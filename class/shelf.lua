@@ -8,85 +8,76 @@ function Shelf:new(x, y, width, height, price)
 end
 
 function Shelf:add(item, x)
-    local index
+    local index = #self.items+1
     for i = 1, #self.items do
         if x<self.items[i].x then
             index = i
         end
     end
-    item.x = x
+    item:place(true, x, self.y - item.height)
     table.insert(self.items, index, item)
 end
 
 function Shelf:availableX(item)
+    local distance = 1000
     local obj = GameObject(item.x, self.y-item.height, item.width, item.height)
-    local indexL = nil
-    local indexR = nil
-    for i, dec in ipairs(self.items) do
-        if obj.collide(dec) and not indexL then
-            indexL = i
-        else
-            indexR = i
-        end
-    end
+    if self:isPositionFree(obj) and self:xInside(item, obj.x) then return obj.x end
+    
+    
 
-    if not indexL then
-        return obj.x
-    elseif not indexR then
-        indexR = indexL
-    end
-    local xl, xr
-    repeat
-        obj.x = self.items[indexL].x
-        indexL = indexL-1
-        if indexL>0 then
-            if not item.collide(self.items[indexL]) and self.isPositionFree(obj) then
-                indexL=0
-                xl = obj.x
-            end
-        else
-            if obj.x>self.x-obj.width and self.isPositionFree(obj)then
-                xl = obj.x
-            end
-        end
-    until indexL<1
-    repeat
-        obj.x = self.items[indexR].x+self.items[indexR].width
-        indexR = indexR+1
-        if indexL<=#self.items then
-            if not item.collide(self.items[indexR]) and self.isPositionFree(obj) then
-                indexR=#self.items+1
-                xr = obj.x
-            end
-        else
-            if obj.x<self.x+self.width-obj.width and self.isPositionFree(obj)then
-                xr = obj.x
-            end
-        end
-    until indexR>#self.items
 
-    if xl and xr then
-        if item.x-xl<xr-item.x then
-            return xl
-        else
-            return xr
-        end
-    elseif xl then
-        return xl
+    if item.x < self.x then
+        obj.x = self.x-item.width/2
     else
-        return xr
+        obj.x = self.x+self.width-item.width/2
     end
+
+    if self:isPositionFree(obj) then
+        distance = math.abs(obj.x-item.x)
+    else
+        obj.x = nil
+    end
+
+    local xs = {}
+    for index, value in ipairs(self.items) do
+        table.insert(xs, {x = value.x, width = value.width})
+    end
+
+    for index, value in ipairs(xs) do
+        local x = obj.x
+        obj.x = value.x-obj.width
+        if self:isPositionFree(obj) and math.abs(obj.x-item.x)<distance and self:xInside(item, obj.x) then
+            distance = math.abs(obj.x-item.x)
+        else
+            obj.x = x
+        end
+    end
+    for index, value in ipairs(xs) do
+        local x = obj.x
+        obj.x = value.x+value.width
+        if self:isPositionFree(obj) and math.abs(obj.x-item.x)<distance and self:xInside(item, obj.x) then
+            distance = math.abs(obj.x-item.x)
+        else
+            obj.x = x
+        end
+    end
+
+    if obj.x then        
+        return obj.x
+    end
+
+    return nil
 end
 
 function Shelf:isPositionFree(item)
     local proj = GameObject(item.x, self.y-item.height, item.width, item.height)
     for i, item in ipairs(game.placed) do
-        if proj:collide(item) then
+        if proj:collide(item) and item~=self then
             return false
         end
-        if item:is(Shelf) and item ~= self then
+        if item:is(Shelf) then
             for j, decor in ipairs(item.items) do
-                if proj:collide(item) then
+                if proj:collide(decor) then
                     return false
                 end
             end
@@ -95,5 +86,17 @@ function Shelf:isPositionFree(item)
     return true
 end
 
-function Shelf:update()
+function Shelf:update(dt, earthquake)
+    for i = #self.items, 1, -1 do
+        self.items[i]:update(dt, earthquake)
+        if self.items[i].gravity>0 then
+            table.insert(game.placed, self.items[i])
+            table.remove(self.items, i)
+        end
+
+    end
+end
+
+function Shelf:xInside(item, x)
+    return x <= self.x+self.width-item.width/2 and x>=self.x-item.width/2
 end

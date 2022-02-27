@@ -48,11 +48,11 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button)
-    game:mousepressed(x/10*2, y/10*2, button)
+    game:mousepressed(math.floor(x/10*2), math.floor(y/10*2), button)
 end
 
 function love.mousereleased(x, y, button, istouch)
-    game:mousereleased(x/10*2, y/10*2, button)
+    game:mousereleased(math.floor(x/10*2), math.floor(y/10*2), button)
 end
 
 function love.keypressed(key)

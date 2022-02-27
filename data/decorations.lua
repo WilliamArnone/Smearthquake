@@ -16,6 +16,5 @@ end
 
 function randomDecoration()
     local name = lume.weightedchoice(decoration_ratio)
-    print("Hello")
     return decorations[name]()
 end
