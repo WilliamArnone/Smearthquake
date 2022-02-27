@@ -1,8 +1,11 @@
-Item = GameObject:extend()
+Item = Object:extend()
 
 function Item:new(x, y, width, height, price, happiness, instability, img, sound)
-    self.super.new(self, x, y, width, height)
-    self.happinsess = happiness
+    self.x = x
+    self.y = y
+    self.width = width
+    self. height = height
+    self.happiness = happiness
     self.total_instability = instability
     self.instability = 0
     self.img = img
@@ -31,8 +34,9 @@ end
 function Item:canBePlaced()
     local colliding = false
     for index, item in ipairs(game.placed) do
-        colliding = colliding or self:Collide(item)
+        colliding = colliding or self:collide(item)
     end
+    colliding = colliding or self:collide(game.computer)
     if colliding then
         return nil
     else
@@ -65,6 +69,6 @@ function Item:drawProjection(proj)
     love.graphics.rectangle("line", x, y, self.width, self.height)
 end
 
-function Item:draw(earthquake, dx, dy)
-    self.super.draw(self, earthquake and self.gravity==0 , 1, 0, 1, dx, dy)
-end
+-- function Item:draw(earthquake, dx, dy)
+--     self.super.draw(self, earthquake and self.gravity==0 , 1, 0, 1, dx, dy)
+-- end

@@ -10,9 +10,8 @@ end
 
 function love.load()
     lume = require "libraries.lume"
-
     Object = require "libraries.classic"
-    Camera = require 'libraries.Camera'
+    --Camera = require 'libraries.Camera'
     require "class.game"
     require "class.gameObject"
     require "class.item"
@@ -20,6 +19,9 @@ function love.load()
     require "class.shop"
     require "class.work"
     require "class.computer"
+    require "class.shelf"
+    require "class.decoration"
+    require "class.poster"
     require "data.decorations"
     require "data.posters"
     require "data.words"
@@ -27,7 +29,7 @@ function love.load()
     gameWidth = 192*2
     gameHeight = 108*2
 
-    initDecotations()
+    initDecorations()
     initPosters()
     initWords()
 

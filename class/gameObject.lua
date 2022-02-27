@@ -11,7 +11,7 @@ function GameObject:isPointInside(x, y)
     return x > self.x and x < self.x+self.width and y > self.y and y < self.y+self.height
 end
 
-function GameObject:Collide(obj)
+function GameObject:collide(obj)
     return self.x + self.width > obj.x and
         obj.x + obj.width > self.x and
         self.y + self.height > obj.y and

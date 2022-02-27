@@ -5,8 +5,8 @@ posters_ratio = {}
 function initPosters()
     posters = {}
     --                                          x, y, width, height, price, happiness, instability, img, sound
-    posters["picasso"] = function () return Item(0, 0, 32, 32, 20, 10, 10, "picasso.png", "solid") end
-    posters["monnalisa"] = function () return Item(0, 0, 32, 32, 300, 10, 10, "monnalisa.png", "solid") end
+    posters["picasso"] = function () return Poster(0, 0, 32, 32, 20, 10, 10, "picasso.png", "solid") end
+    posters["monnalisa"] = function () return Poster(0, 0, 32, 32, 300, 10, 10, "monnalisa.png", "solid") end
 
 
     posters_ratio = {}
