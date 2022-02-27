@@ -29,6 +29,8 @@ function love.load()
     gameWidth = 192*2
     gameHeight = 108*2
 
+    State = "Game"
+
     initDecorations()
     initPosters()
     initWords()
@@ -37,7 +39,9 @@ function love.load()
 end
 
 function love.update(dt)
-    game:update(dt)
+    if State == "Game"then
+        game:update(dt)
+    end
 end
 
 function love.draw()
@@ -48,15 +52,21 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button)
-    game:mousepressed(math.floor(x/10*2), math.floor(y/10*2), button)
+    if State == "Game" then
+        game:mousepressed(math.floor(x/10*2), math.floor(y/10*2), button)
+    end
 end
 
 function love.mousereleased(x, y, button, istouch)
-    game:mousereleased(math.floor(x/10*2), math.floor(y/10*2), button)
+    if State =="Game" then
+        game:mousereleased(math.floor(x/10*2), math.floor(y/10*2), button)
+    end
 end
 
 function love.keypressed(key)
-    game:keypressed(key)
+    if State == "Game" then
+        game:keypressed(key)
+    end
 end
 
 ---@diagnostic disable-next-line: undefined-field

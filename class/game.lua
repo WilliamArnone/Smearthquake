@@ -81,7 +81,7 @@ function Game:update(dt)
     self.life = math.min(self.life+lifeconst, life_total)
 
     if self.life<= 0 then
-        love.load()
+        State = "Menu"
     end
 end
 
