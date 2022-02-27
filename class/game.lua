@@ -4,6 +4,12 @@ local max_earthquake_time = 3
 local min_earthquake_duration = 2
 local max_earthquake_duration = 5
 local start_money = 400
+local life_increase = 1
+local life_decrease = 1
+local life_total = 100
+local life_start = 60
+local low_happy = 50
+local high_happy = 100
 
 function Game:createBox(item)
     table.insert(self.boxes, Box(love.math.random(64), love.math.random(gameHeight*2/3, gameHeight-32), item))
@@ -20,6 +26,7 @@ function Game:new()
 
     self.money = start_money
     self.happiness = 0
+    self.life = life_start
 end
 
 
@@ -61,6 +68,21 @@ function Game:update(dt)
         grabobj.y = mouseY + self.dragging.dy
         self.dragging.proj = grabobj:canBePlaced()
     end
+
+    local lifeconst
+    if self.happiness<low_happy then
+        lifeconst = -dt*life_decrease
+    elseif self.happiness<high_happy then
+        lifeconst = 0
+    else
+        lifeconst = dt*life_increase
+    end
+
+    self.life = math.min(self.life+lifeconst, life_total)
+
+    if self.life<= 0 then
+        love.load()
+    end
 end
 
 function Game:draw()
@@ -86,7 +108,7 @@ function Game:draw()
     end
 
     love.graphics.print(self.money, 0, 0)
-    love.graphics.print(self.happiness, gameWidth-50, 0)
+    love.graphics.print(self.life, gameWidth-50, 0)
 
     --print money, happiness
 end

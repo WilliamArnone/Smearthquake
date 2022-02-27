@@ -2,8 +2,8 @@ Shelf = Item:extend()
 
 Shelf:implement(GameObject)
 
-function Shelf:new(x, y, width, height, price)
-    self.super.new(self, x, y, width, height, price, 0, 100, "shelf", nil)
+function Shelf:new(x, y, width, price)
+    self.super.new(self, x, y, width, 5, price, 0, 100, "shelf", nil)
     self.items = {}
 end
 
