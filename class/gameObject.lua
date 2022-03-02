@@ -1,8 +1,9 @@
 GameObject = Object:extend()
 
-function GameObject:new(x, y, width, height)
+function GameObject:new(x, y, width, height, img)
     self.width = width
     self.height = height
+    self.img = img
     self.x = x
     self.y = y
 end
@@ -18,7 +19,7 @@ function GameObject:collide(obj)
         obj.y + obj.height > self.y
 end
 
-function GameObject:draw(earthquake, r, g, b, dx, dy)
+function GameObject:draw(earthquake, dx, dy, frame, angle, sx, sy)
     local x, y = self.x, self.y
     if earthquake then
         x = x + love.math.random(0, 3)
@@ -29,6 +30,12 @@ function GameObject:draw(earthquake, r, g, b, dx, dy)
         y = y + dy
     end
 
-    love.graphics.setColor(r, g, b)
-    love.graphics.rectangle("line", x, y, self.width, self.height)
+    --love.graphics.setColor(r, g, b)
+    --love.graphics.rectangle("line", x, y, self.width, self.height)
+    if frame then
+        love.graphics.draw(self.img.image, self.img.frames[frame], x, y, angle, sx, sy)
+    else
+        love.graphics.draw(self.img, x, y, angle, sx, sy)
+    end
+
 end

@@ -1,4 +1,5 @@
-Box = GameObject:extend()
+Box = Item:extend()
+Box:implement(GameObject)
 
 function Box:new(x, y, item)
     self.super.new(self, x, y, 32, 32)
@@ -6,5 +7,5 @@ function Box:new(x, y, item)
 end
 
 function Box:draw(earthquake)
-    self.super.draw(self, earthquake, 1, 1, 1)
+    self.super.draw(self, earthquake)
 end

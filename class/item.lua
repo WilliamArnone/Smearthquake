@@ -1,4 +1,5 @@
 Item = Object:extend()
+Item:implement(GameObject)
 
 function Item:new(x, y, width, height, price, happiness, instability, img, sound)
     self.x = x
@@ -66,9 +67,21 @@ function Item:drawProjection(proj)
         love.graphics.setColor(0, 1, 0, 0.5)
         x, y = self.x, self.y
     end
-    love.graphics.rectangle("line", x, y, self.width, self.height)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("fill", x, y, self.width, self.height)
+    love.graphics.setColor(1, 1, 1)
 end
 
--- function Item:draw(earthquake, dx, dy)
---     self.super.draw(self, earthquake and self.gravity==0 , 1, 0, 1, dx, dy)
--- end
+function Item:draw(earthquake, dx, dy)
+    --self.super.draw(self, earthquake and self.gravity==0 , 1, 0, 1, dx, dy)
+    local x, y = self.x, self.y
+    if earthquake then
+        x = x + love.math.random(0, 3)
+        y = y + love.math.random(0, 3)
+    end
+    if dx and dy then
+        x = x + dx
+        y = y + dy
+    end
+    love.graphics.rectangle("line", x, y, self.width, self.height)
+end

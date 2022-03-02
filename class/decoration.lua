@@ -1,5 +1,4 @@
 Decoration = Item:extend()
-Decoration:implement(GameObject)
 
 function Decoration:canBePlaced()
     for index, item in ipairs(game.placed) do

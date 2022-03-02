@@ -7,12 +7,13 @@ local start_money = 400
 local life_increase = 1
 local life_decrease = 1
 local life_total = 100
-local life_start = 60
+local life_start = 100
 local low_happy = 50
 local high_happy = 100
 
 function Game:createBox(item)
     table.insert(self.boxes, Box(love.math.random(64), love.math.random(gameHeight*2/3, gameHeight-32), item))
+    self.door:ordered()
 end
 
 
@@ -22,15 +23,19 @@ function Game:new()
     self.dragging = {}
     self.earthquake = 0
     self.nextEarthquake = 12
-    self.computer = Computer(96, 108, 196, 108)
+    self.computer = Computer(96, 98, 196, 108)
+    self.door = Door()
+    self.handdx = Hand(true)
+    self.handsx = Hand(false)
 
     self.money = start_money
     self.happiness = 0
     self.life = life_start
+    self.lifebar = Lifebar()
 end
 
 
-function Game:update(dt)
+function Game:update(dt, x, y)
     self.happiness = 0
 
     --earthquake timer
@@ -61,13 +66,17 @@ function Game:update(dt)
     
     --update grabbed
     local grabobj = self.dragging.object
-    local mouseX, mouseY = love.mouse.getX()/10*2, love.mouse.getY()/10*2
     if grabobj then
         self.happiness = self.happiness + grabobj.happiness
-        grabobj.x = mouseX + self.dragging.dx
-        grabobj.y = mouseY + self.dragging.dy
+        grabobj.x = x + self.dragging.dx
+        grabobj.y = y + self.dragging.dy
         self.dragging.proj = grabobj:canBePlaced()
     end
+
+    self.door:update(dt)
+    self.computer:update(x, y)
+    self.handdx:update(dt, x, y)
+    self.handsx:update(dt, x, y)
 
     local lifeconst
     if self.happiness<low_happy then
@@ -85,9 +94,12 @@ function Game:update(dt)
     end
 end
 
-function Game:draw()
-    local earthquake = self.earthquake>0
+function Game:draw(isOn)
+    local earthquake = self.earthquake>0 and isOn
 
+    love.graphics.draw(images.room, 0, 0)
+
+    self.door:draw()
     self.computer:draw(earthquake)
     --drawobjs
     for index, item in ipairs(self.placed) do
@@ -107,17 +119,21 @@ function Game:draw()
         self.dragging.object:drawProjection(self.dragging.proj)
     end
 
-    love.graphics.print(self.money, 0, 0)
-    love.graphics.print(self.life, gameWidth-50, 0)
+    self.handdx:draw(earthquake)
+    self.handsx:draw(earthquake)
+
+    game:print(self.money, 0, 0, "number")
+    --game:print(math.floor(self.life), gameWidth-50, 0, "number")
 
     --print money, happiness
+    self.lifebar:draw(self.happiness, low_happy, high_happy, self.life, life_total)
 end
 
 function Game:keypressed(key)
     if key=="space"then
         --table.insert(self.boxes, Box(love.math.random(gameWidth), love.math.random(gameHeight), randomDecoration()))
         --self:createBox("decoration", "doll")
-        self:createBox(Shelf(0, 0, 60, 6, 100))
+        --self:createBox(Shelf(0, 0, 60, 6, 100))
     end
     self.computer:keypressed(key)
 end
@@ -190,3 +206,43 @@ function Game:mousereleased(x, y, button)
         self.dragging.object = nil
     end
 end
+
+function Game:print(words, x, y, type, color)
+    local size
+    local font
+    if color=="green" then
+        love.graphics.setColor(0, 1, 0)
+    elseif color=="red" then
+        love.graphics.setColor(1, 0, 0)
+    elseif color=="black" then
+        love.graphics.setColor(0, 0, 0)
+    end
+    if type=="number" then
+        size = 4
+        font = images.price_font
+    else
+        size = 8
+        font = images.type_font
+    end
+
+    for i = 1, string.len(words) do
+        local letter = string.sub(words, i, i)
+        local frame
+        
+        if type=="number" then
+            if letter == "$" then
+                frame = 11
+            else
+                frame = tonumber(letter)+1
+            end
+        else
+            frame = (string.byte(letter))%32
+        end
+
+        love.graphics.draw(font.image, font.frames[frame], x+(i-1)*(size+size/4), y)
+    end
+
+    
+    love.graphics.setColor(1, 1, 1)
+end
+

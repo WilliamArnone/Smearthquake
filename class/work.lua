@@ -1,7 +1,7 @@
 Work = GameObject:extend()
 
 function Work:new(x, y, width, height)
-    self.super.new(self, x, y, width, height)
+    self.super.new(self, x, y, width, height, images.work)
     self.word = randomWord()
     self.charindex = 0
 end
@@ -18,12 +18,11 @@ function Work:keypressed(key)
 end
 
 function Work:draw(dx, dy)
-    self.super.draw(self, false, 0.6, 0.6, 0.6, dx, dy)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(self.word, self.x + 5 + dx, self.y + 32 + dy)
+    self.super.draw(self, false, dx, dy)
+    --love.graphics.setColor(1, 1, 1)
+    game:print(self.word, self.x + 5 + dx, self.y + 48 + dy, "type")
     if self.charindex>0 then
-        love.graphics.setColor(0, 1, 0)
-        love.graphics.print(string.sub(self.word, 1, self.charindex), self.x + 5 + dx, self.y + 32 + dy)
+        game:print(string.sub(self.word, 1, self.charindex), self.x + 5 + dx, self.y + 48 + dy, "type", "green")
     end
 
 end
