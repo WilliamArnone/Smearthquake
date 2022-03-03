@@ -5,18 +5,18 @@ function Shop:new(x, y, width, height)
     self.super.new(self, x, y, width, height, images.shop)
 
     self.items = {randomDecoration(), randomDecoration(), randomPoster(), randomPoster()}
-    self.shelves = {Shelf(0, 0, 40/shelves_scale, 120),
-        Shelf(0, 0, 70/shelves_scale, 200),
-        Shelf(0, 0, 120/shelves_scale, 340),
-        Shelf(0, 0, 150/shelves_scale, 400)
+    self.shelves = {Shelf(0, 0, 40/shelves_scale, 120, true, 1),
+        Shelf(0, 0, 70/shelves_scale, 200, true, 1),
+        Shelf(0, 0, 120/shelves_scale, 340, true, 1),
+        Shelf(0, 0, 150/shelves_scale, 400, true, 1)
     }
     self.state = "amazon"
-    self.amazonTab = Item(self.x+2, self.y+4, 59, 7)
-    self.ikeaTab = Item(self.x+61, self.y+4, 39, 7)
+    self.amazonTab = Item(self.x+1, self.y+3, 59, 7)
+    self.ikeaTab = Item(self.x+60, self.y+3, 39, 7)
     self.buttons = {}
 
     for i = 1, 4 do
-        table.insert(self.buttons, GameObject(self.x + 11 + (10 + 32) * (i-1) , self.y + 68, 32, 6, images.buy))
+        table.insert(self.buttons, GameObject(self.x + 9 + (8 + 34) * (i-1) , self.y + 68, 34, 6, images.buy))
     end
 
     for index, item in ipairs(self.items) do
@@ -39,7 +39,7 @@ function Shop:mousepressed(x, y)
             if game.money >= item.price then
                 game.money = game.money - item.price
                 if self.state == "amazon" then
-                    game:createBox(item)
+                    game:createBox(item, 3)
                     if index<3 then
                         self.items[index] = randomDecoration()
                     else
@@ -47,7 +47,7 @@ function Shop:mousepressed(x, y)
                     end
                     self:setOnUI(self.items[index], index)
                 else
-                    game:createBox(Shelf(0, 0, item.width*shelves_scale, 0))
+                    game:createBox(Shelf(0, 0, item.width*shelves_scale, 0), 1)
                 end
             end
         end
@@ -60,8 +60,8 @@ function Shop:mousepressed(x, y)
 end
 
 function Shop:setOnUI(item, index)
-    item.x = self.x + 11 + (10 + 32) * (index-1) + (32-item.width)/2
-    item.y = self.y + 28 + (32-item.height)/2
+    item.x = self.x + 8 + (8 + 34) * (index-1) + (34-item.width)/2
+    item.y = self.y + 26 + (34-item.height)/2
 end
 
 function Shop:draw(dx, dy)
@@ -78,7 +78,7 @@ function Shop:draw(dx, dy)
     end
     for index, item in ipairs(list) do
         item:draw(false, dx, dy)
-        game:print('$'..item.price, self.x + 12 + (10 + 32) * (index-1) + dx, self.y + 61 + dy, "number", "black")
+        Print('$'..item.price, self.x + 11 + (8 + 34) * (index-1) + dx, self.y + 61 + dy, "number", "black")
     end
     for index, gameobj in ipairs(self.buttons) do
         gameobj:draw(false, dx, dy)

@@ -11,9 +11,16 @@ local life_start = 100
 local low_happy = 50
 local high_happy = 100
 
-function Game:createBox(item)
-    table.insert(self.boxes, Box(love.math.random(64), love.math.random(gameHeight*2/3, gameHeight-32), item))
+function Game:createBox(item, frame)
     self.door:ordered()
+    newbox = Box(love.math.random(64), love.math.random(gameHeight-36, gameHeight-25), item, frame)
+    for index, box in ipairs(self.boxes) do
+        if box.y > newbox.y then
+            table.insert(self.boxes, index, newbox)
+            return
+        end
+    end
+    table.insert(self.boxes, newbox)
 end
 
 
@@ -32,6 +39,7 @@ function Game:new()
     self.happiness = 0
     self.life = life_start
     self.lifebar = Lifebar()
+    self.dollar = GameObject(6, 16, 0, 0, images.money)
 end
 
 
@@ -63,6 +71,12 @@ function Game:update(dt, x, y)
             end
         end
     end
+
+    for i = #self.boxes, 1, -1 do
+        if self.boxes[i]:update(dt) then
+            table.remove(self.boxes, i)
+        end
+    end
     
     --update grabbed
     local grabobj = self.dragging.object
@@ -90,7 +104,7 @@ function Game:update(dt, x, y)
     self.life = math.min(self.life+lifeconst, life_total)
 
     if self.life<= 0 then
-        State = "Menu"
+        GameMenu:gameOver()
     end
 end
 
@@ -122,11 +136,13 @@ function Game:draw(isOn)
     self.handdx:draw(earthquake)
     self.handsx:draw(earthquake)
 
-    game:print(self.money, 0, 0, "number")
+    --game:print(self.money, 0, 0, "number")
     --game:print(math.floor(self.life), gameWidth-50, 0, "number")
 
     --print money, happiness
     self.lifebar:draw(self.happiness, low_happy, high_happy, self.life, life_total)
+    self.dollar:draw()
+    Print("$"..self.money, self.dollar.x+5, self.dollar.y+6, "number", "darkgreen", 1)
 end
 
 function Game:keypressed(key)
@@ -136,17 +152,24 @@ function Game:keypressed(key)
         --self:createBox(Shelf(0, 0, 60, 6, 100))
     end
     self.computer:keypressed(key)
+    self.handdx:type()
+    self.handsx:type()
 end
 
 function Game:mousepressed(x, y, button)
     if self.dragging.object then
         return
     end
+    if self.computer:isPointInside(x, y) then
+        self.computer:mousepressed(x, y)
+        return
+    end
     for i = #self.boxes, 1, -1 do
         local box = self.boxes[i]
-        if box:isPointInside(x, y) then
+        if box:isPointInside(x, y) and not box.isopen then
             self.dragging.object=box.item
-            table.remove(self.boxes, i)
+            --table.remove(self.boxes, i)
+            box:open()
             self.dragging.dx = - self.dragging.object.width/2
             self.dragging.dy = - self.dragging.object.height/2
             return
@@ -154,8 +177,8 @@ function Game:mousepressed(x, y, button)
     end
     for i = #self.placed, 1, -1 do
         local placed = self.placed[i]
-        if placed:isPointInside(x, y) then
-            if placed:is(Shelf)then
+        if placed:isPointInside(x, y)then
+            if placed:is(Shelf) and #placed.items > 0 then
                 return
                 -- for i = #placed.items, 1, -1 do
                 --     table.insert(self.placed, placed.items[i])
@@ -182,9 +205,6 @@ function Game:mousepressed(x, y, button)
             end
         end
     end
-    if self.computer:isPointInside(x, y) then
-        self.computer:mousepressed(x, y)
-    end
 end
 
 function Game:mousereleased(x, y, button)
@@ -206,43 +226,3 @@ function Game:mousereleased(x, y, button)
         self.dragging.object = nil
     end
 end
-
-function Game:print(words, x, y, type, color)
-    local size
-    local font
-    if color=="green" then
-        love.graphics.setColor(0, 1, 0)
-    elseif color=="red" then
-        love.graphics.setColor(1, 0, 0)
-    elseif color=="black" then
-        love.graphics.setColor(0, 0, 0)
-    end
-    if type=="number" then
-        size = 4
-        font = images.price_font
-    else
-        size = 8
-        font = images.type_font
-    end
-
-    for i = 1, string.len(words) do
-        local letter = string.sub(words, i, i)
-        local frame
-        
-        if type=="number" then
-            if letter == "$" then
-                frame = 11
-            else
-                frame = tonumber(letter)+1
-            end
-        else
-            frame = (string.byte(letter))%32
-        end
-
-        love.graphics.draw(font.image, font.frames[frame], x+(i-1)*(size+size/4), y)
-    end
-
-    
-    love.graphics.setColor(1, 1, 1)
-end
-

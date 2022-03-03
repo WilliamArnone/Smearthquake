@@ -20,9 +20,9 @@ end
 function Work:draw(dx, dy)
     self.super.draw(self, false, dx, dy)
     --love.graphics.setColor(1, 1, 1)
-    game:print(self.word, self.x + 5 + dx, self.y + 48 + dy, "type")
+    Print(self.word, self.x + 5 + dx, self.y + 48 + dy, "type")
     if self.charindex>0 then
-        game:print(string.sub(self.word, 1, self.charindex), self.x + 5 + dx, self.y + 48 + dy, "type", "green")
+        Print(string.sub(self.word, 1, self.charindex), self.x + 5 + dx, self.y + 48 + dy, "type", "green")
     end
 
 end

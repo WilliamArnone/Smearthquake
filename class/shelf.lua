@@ -2,9 +2,13 @@ Shelf = Item:extend()
 
 Shelf:implement(GameObject)
 
-function Shelf:new(x, y, width, price)
-    self.super.new(self, x, y, width, 5, price, 0, 100, "shelf", nil)
+function Shelf:new(x, y, width, price, shop, frame)
+    self.super.new(self, x, y, width, 7, price, 0, 100, nil, nil)
     self.items = {}
+    self.shop = shop
+    if shop then
+        self.frame = frame
+    end
 end
 
 function Shelf:add(item, x)
@@ -22,9 +26,6 @@ function Shelf:availableX(item)
     local distance = 1000
     local obj = GameObject(item.x, self.y-item.height, item.width, item.height)
     if self:isPositionFree(obj) and self:xInside(item, obj.x) then return obj.x end
-    
-    
-
 
     if item.x < self.x then
         obj.x = self.x-item.width/2
@@ -99,4 +100,16 @@ end
 
 function Shelf:xInside(item, x)
     return x <= self.x+self.width-item.width/2 and x>=self.x-item.width/2
+end
+
+function Shelf:draw(earthquake, dx, dy)
+
+    if self.shop then
+        --self.super.draw(earthquake, dx, dy)
+    else
+        --love.graphics.draw(images.shelf.image, images.shelf.frames[1], self.x - 3, self.y - 4)
+        --love.graphics.draw(images.shelf.image, images.shelf.frames[2], self.x + 13, self.y - 4, 0, (self.width-32+6)/16, 1)
+        love.graphics.draw(images.shelf.image, images.shelf.frames[1], self.x - 3, self.y - 4)
+
+    end
 end

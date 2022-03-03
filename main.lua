@@ -25,6 +25,7 @@ function love.load()
     require "class.lifebar"
     require "class.door"
     require "class.hand"
+    require "class.menu"
     require "data.decorations"
     require "data.posters"
     require "data.words"
@@ -36,20 +37,30 @@ function love.load()
     scaleFactorX = love.graphics.getWidth()/gameWidth
     scaleFactorY = love.graphics.getHeight()/gameHeight
 
-    State = "Game"
-
     loadImages()
+    loadSongs()
+    GameMenu = Menu()
+    GameMenu:main()
+
 
     initDecorations()
     initPosters()
     initWords()
 
-    game = Game()
+    --game = Game()
 end
 
 function love.update(dt)
     local x, y = love.mouse.getX()/scaleFactorX, love.mouse.getY()/scaleFactorY
-    if State == "Game"then
+    GameMenu:update(dt, x, y)
+    if State == "New"then
+        if not game then
+            game = Game()
+        end
+        if not GameMenu.visible then
+            State = "Game"
+        end
+    elseif State == "Game" then
         game:update(dt, x, y)
     end
 end
@@ -57,15 +68,20 @@ end
 function love.draw()
     love.graphics.scale(scaleFactorX,scaleFactorY)
     love.graphics.setDefaultFilter("nearest", "nearest")
-    game:draw(State == "Game")
-    love.graphics.rectangle("line", 0, 0, gameWidth, gameHeight)
+    if game then
+        game:draw(State == "Game")
+    end
+    --love.graphics.rectangle("line", 0, 0, gameWidth, gameHeight)
     --love.graphics.print("Hello Word")
+    GameMenu:draw()
 end
 
 function love.mousepressed(x, y, button)
     x, y = x/scaleFactorX, y/scaleFactorY
     if State == "Game" then
         game:mousepressed(math.floor(x), math.floor(y), button)
+    else
+        GameMenu:mousepressed(x, y)
     end
 end
 
@@ -78,8 +94,19 @@ end
 
 function love.keypressed(key)
     if State == "Game" then
-        game:keypressed(key)
+        if key == "escape" or key == "return" then
+            GameMenu:pause()
+        else
+            game:keypressed(key)
+        end
     end
+end
+
+function loadSongs()
+    sounds = {}
+
+    sounds.death = love.audio.newSource("sounds/death.mp3", "stream")
+
 end
 
 function loadImages()
@@ -97,12 +124,20 @@ function loadImages()
     images.computer:setFilter("nearest", "nearest")
     images.work = love.graphics.newImage("img/work.png")
     images.work:setFilter("nearest", "nearest")
+    images.money = love.graphics.newImage("img/money.png")
+    images.money:setFilter("nearest", "nearest")
+    images.logo = love.graphics.newImage("img/title.png")
+    images.logo:setFilter("nearest", "nearest")
+    images.menu = love.graphics.newImage("img/menu.png")
+    images.menu:setFilter("nearest", "nearest")
 
     images.type_font = importSheet("img/type_font.png", 8, 8, 3, 9, 26)
     images.price_font = importSheet("img/price_font.png", 4, 6, 2, 6, 11)
-    images.hands = importSheet("img/hands.png", 32, 32, 1, 5, 5)
-    images.shop = importSheet("img/shop.png", 178, 90, 2, 1, 2)
+    images.hands = importSheet("img/hands.png", 32, 32, 1, 8, 8)
+    images.shop = importSheet("img/shop.png", 176, 89, 2, 1, 2)
     images.door = importSheet("img/door.png", 64, 108, 1, 5, 5)
+    images.box = importSheet("img/boxes.png", 32, 32, 2, 2, 4)
+    images.shelf = importSheet("img/shelf.png", 16, 16, 1, 2, 2)
 
 end
 
@@ -119,6 +154,56 @@ function importSheet (image_name, width, height, rows, columns, max)
         end
     end
     return {image = image, frames = frames}
+end
+
+
+function Print(words, x, y, type, color, s)
+    if not s then
+        s = 1
+    end
+    local size
+    local font
+    if color=="darkgreen" then
+        love.graphics.setColor(13/255, 83/255, 2/255)
+    elseif color=="green" then
+        love.graphics.setColor(0, 1, 0)
+    elseif color=="red" then
+        love.graphics.setColor(1, 0, 0)
+    elseif color=="black" then
+        love.graphics.setColor(0, 0, 0)
+    end
+    if type=="number" then
+        size = 4*s
+        font = images.price_font
+    else
+        size = 8*s
+        font = images.type_font
+    end
+
+    for i = 1, string.len(words) do
+        local letter = string.sub(words, i, i)
+        local frame
+        
+        if type=="number" then
+            if letter == "$" then
+                frame = 11
+            else
+                frame = tonumber(letter)+1
+            end
+        else
+            if letter == " " then
+                frame = nil
+            else
+                frame = (string.byte(letter))%32
+            end
+        end
+        if frame then
+            love.graphics.draw(font.image, font.frames[frame], x+(i-1)*(size+size/4), y, 0, s, s)
+        end
+    end
+
+    
+    love.graphics.setColor(1, 1, 1)
 end
 
 ---@diagnostic disable-next-line: undefined-field

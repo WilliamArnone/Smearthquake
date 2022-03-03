@@ -22,8 +22,8 @@ end
 function GameObject:draw(earthquake, dx, dy, frame, angle, sx, sy)
     local x, y = self.x, self.y
     if earthquake then
-        x = x + love.math.random(0, 3)
-        y = y + love.math.random(0, 3)
+        x = x + love.math.random(-2, 2)
+        y = y + love.math.random(-2, 2)
     end
     if dx and dy then
         x = x + dx
@@ -32,10 +32,14 @@ function GameObject:draw(earthquake, dx, dy, frame, angle, sx, sy)
 
     --love.graphics.setColor(r, g, b)
     --love.graphics.rectangle("line", x, y, self.width, self.height)
-    if frame then
-        love.graphics.draw(self.img.image, self.img.frames[frame], x, y, angle, sx, sy)
+    if not self.img then
+        love.graphics.rectangle("line", x, y, self.width, self.height)
     else
-        love.graphics.draw(self.img, x, y, angle, sx, sy)
+        if frame then
+            love.graphics.draw(self.img.image, self.img.frames[frame], x, y, angle, sx, sy)
+        else
+            love.graphics.draw(self.img, x, y, angle, sx, sy)
+        end
     end
 
 end

@@ -4,7 +4,7 @@ local lifeheight = 16
 
 
 function Lifebar:new()
-    self.super.new(self, gameWidth-lifewidth-5, 3, lifewidth, lifeheight, images.lifebar)
+    self.super.new(self, 0, 1, lifewidth, lifeheight, images.lifebar)
     self.mainFrame = love.graphics.newQuad(0, 0, self.width, self.height, self.img:getWidth(), self.img:getHeight())
 end
 
