@@ -28,9 +28,9 @@ function initPosters()
     posters_ratio["monnalisa"] = 1
     posters_ratio["specchiodellebrame"] = 3
     posters_ratio["munch"] = 2
-    posters_ratio["madmax"] = 1
+    posters_ratio["madmax"] = 6
     posters_ratio["naruto"] = 7
-    posters_ratio["sonic"] = 5
+    posters_ratio["sonic"] = 6
     posters_ratio["yellowspace"] = probspace
     posters_ratio["dnd"] = 7
     posters_ratio["scott"] = 8

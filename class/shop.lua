@@ -4,10 +4,10 @@ function Shop:new(x, y, width, height)
     self.super.new(self, x, y, width, height, images.shop, 1)
 
     self.items = {randomDecoration(), randomDecoration(), randomPoster(), randomPoster()}
-    self.shelves = {Shelf(12, 120, true, 1),
-        Shelf(19, 200, true, 2),
-        Shelf(28, 340, true, 3),
-        Shelf(32, 400, true, 4)
+    self.shelves = {Shelf(12, 40, true, 1),
+        Shelf(19, 60, true, 2),
+        Shelf(28, 100, true, 3),
+        Shelf(32, 160, true, 4)
     }
     self.state = "amazon"
     self.amazonTab = GameObject(self.x+1, self.y+3, 59, 7)
