@@ -11,7 +11,7 @@ local life_start = 100
 local low_happy = 50
 local high_happy = 100
 shelves_scale = 4
-inc_ratio = 0.5
+inc_ratio = 0.75
 
 function Game:createBox(item, frame)
     self.door:ordered()

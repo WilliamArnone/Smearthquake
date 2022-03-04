@@ -26,6 +26,12 @@ end
 function Item:canBePlaced()
     local colliding = false
     for index, item in ipairs(game.placed) do
+        if item:is(Shelf) then
+            for index, obj in ipairs(item.items) do
+                colliding = colliding or self:collide(obj)
+            end
+            item = GameObject(item.x, item.y-3, item.width, item.height+3)
+        end
         colliding = colliding or self:collide(item)
     end
     colliding = colliding or self:collide(game.computer)
