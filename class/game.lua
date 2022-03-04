@@ -1,8 +1,8 @@
 Game = Object:extend()
-local min_earthquake_time = 10
-local max_earthquake_time = 3
+local min_earthquake_time = 3
+local max_earthquake_time = 10
 local min_earthquake_duration = 2
-local max_earthquake_duration = 5
+local max_earthquake_duration = 6
 local start_money = 100
 local life_increase = 1
 local life_decrease = 1
@@ -64,7 +64,7 @@ function Game:new()
     self.boxes = {}
     self.dragging = {}
     self.earthquake = 0
-    self.nextEarthquake = 12
+    self.nextEarthquake = 0
     self.computer = Computer(96, 98, 196, 108)
     self.door = Door()
     self.handdx = Hand(true)
@@ -218,8 +218,16 @@ function Game:keypressed(key)
         --self:createBox("decoration", "doll")
         --self:createBox(Shelf(0, 0, 60, 6, 100))
     end
-    self.computer:keypressed(key)
-    self.handdx:type()
+    if key == "tab" then
+        if self.computer.state == "work" then
+            self.computer.state = "shop"
+        else
+            self.computer.state = "work"
+        end
+    else
+        self.handdx:type()
+        self.computer:keypressed(key)
+    end
     self.handsx:type()
 end
 
