@@ -26,6 +26,7 @@ function love.load()
     require "class.door"
     require "class.hand"
     require "class.menu"
+    require "class.money"
     require "data.decorations"
     require "data.posters"
     require "data.words"
@@ -105,7 +106,18 @@ end
 function loadSongs()
     sounds = {}
 
-    sounds.death = love.audio.newSource("sounds/death.mp3", "stream")
+    sounds.death = love.audio.newSource("sounds/death.wav", "stream")
+    sounds.main = love.audio.newSource("sounds/main.wav", "stream")
+    sounds.main:setLooping(true)
+    sounds.menu = love.audio.newSource("sounds/menu.wav", "stream")
+    sounds.menu:setLooping(true)
+
+    sounds.earthquake = love.audio.newSource("sounds/earthquake.wav", "static")
+    sounds.earthquake:setLooping(true)
+    sounds.glass = love.audio.newSource("sounds/glass.wav", "static")
+    sounds.hard = love.audio.newSource("sounds/hard.wav", "static")
+    sounds.money = love.audio.newSource("sounds/money.wav", "static")
+    sounds.order = love.audio.newSource("sounds/ringbell.wav", "static")
 
 end
 

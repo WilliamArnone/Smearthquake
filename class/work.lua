@@ -14,6 +14,7 @@ function Work:keypressed(key)
         game.money = game.money + #self.word
         self.word = randomWord()
         self.charindex = 0
+        game.moneyanim = Money(#self.word, "darkgreen")
     end
 end
 

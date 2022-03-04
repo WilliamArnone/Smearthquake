@@ -1,9 +1,8 @@
 Shelf = Item:extend()
-
 Shelf:implement(GameObject)
 
-function Shelf:new(x, y, width, price, shop, frame)
-    self.super.new(self, x, y, width, 7, price, 0, 100, nil, nil)
+function Shelf:new(width, price, shop, frame)
+    self.super.new(self, width, 7, price, 0, 100, nil, sounds.hard)
     self.items = {}
     self.shop = shop
     if shop then
@@ -94,8 +93,8 @@ function Shelf:update(dt, earthquake)
             table.insert(game.placed, self.items[i])
             table.remove(self.items, i)
         end
-
     end
+    self.super.update(self, dt, false)
 end
 
 function Shelf:xInside(item, x)
@@ -104,12 +103,21 @@ end
 
 function Shelf:draw(earthquake, dx, dy)
 
-    if self.shop then
-        --self.super.draw(earthquake, dx, dy)
-    else
-        --love.graphics.draw(images.shelf.image, images.shelf.frames[1], self.x - 3, self.y - 4)
-        --love.graphics.draw(images.shelf.image, images.shelf.frames[2], self.x + 13, self.y - 4, 0, (self.width-32+6)/16, 1)
-        love.graphics.draw(images.shelf.image, images.shelf.frames[1], self.x - 3, self.y - 4)
+    local x, y = self.x, self.y
+    if earthquake then
+        x = x + love.math.random(-2, 2)
+        y = y + love.math.random(-2, 2)
+    end
+    if dx and dy then
+        x = x + dx
+        y = y + dy
+    end
 
+    if self.shop then
+        --self.super.draw(earthquake, x, y)
+    else
+        love.graphics.draw(images.shelf.image, images.shelf.frames[1], x - 3, y - 4)
+        love.graphics.draw(images.shelf.image, images.shelf.frames[2], x + 13, y - 4, 0, (self.width-26)/16, 1)
+        love.graphics.draw(images.shelf.image, images.shelf.frames[1], x+self.width+3, y-4, 0, -1, 1)
     end
 end

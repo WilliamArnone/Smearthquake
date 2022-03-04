@@ -10,3 +10,15 @@ function Decoration:canBePlaced()
         end
     end
 end
+
+function Item:drawProjection(proj)
+    if proj then
+        love.graphics.setColor(0.4, 1, 0.4, 0.7)
+        self.super.draw(self, false, proj.x-self.x, proj.y-self.y)
+        love.graphics.setColor(0.7, 0.7, 0.7, 0.7)
+    else
+        love.graphics.setColor(1, 0.4, 0.4, 0.7)
+    end
+    self:draw()
+    love.graphics.setColor(1, 1, 1)
+end

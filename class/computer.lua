@@ -5,8 +5,8 @@ function Computer:new(x, y, width, height)
     self.state = "work"
     self.work = Work(self.x + 10, self.y + 11 , 177, 89)
     self.shop = Shop(self.x + 10, self.y + 11 , 177, 89)
-    self.workIcon = Item(self.x+18, self.y+92, 24, 8)
-    self.shopIcon = Item(self.x+43, self.y+92, 38, 8)
+    self.workIcon = GameObject(self.x+18, self.y+92, 24, 8)
+    self.shopIcon = GameObject(self.x+43, self.y+92, 38, 8)
     self.mouse = GameObject(self.x+8, self.y+9, 8, 8, images.mouse)
 end
 

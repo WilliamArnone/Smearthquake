@@ -5,14 +5,14 @@ function Shop:new(x, y, width, height)
     self.super.new(self, x, y, width, height, images.shop)
 
     self.items = {randomDecoration(), randomDecoration(), randomPoster(), randomPoster()}
-    self.shelves = {Shelf(0, 0, 40/shelves_scale, 120, true, 1),
-        Shelf(0, 0, 70/shelves_scale, 200, true, 1),
-        Shelf(0, 0, 120/shelves_scale, 340, true, 1),
-        Shelf(0, 0, 150/shelves_scale, 400, true, 1)
+    self.shelves = {Shelf(40/shelves_scale, 120, true, 1),
+        Shelf(70/shelves_scale, 200, true, 1),
+        Shelf(120/shelves_scale, 340, true, 1),
+        Shelf(150/shelves_scale, 400, true, 1)
     }
     self.state = "amazon"
-    self.amazonTab = Item(self.x+1, self.y+3, 59, 7)
-    self.ikeaTab = Item(self.x+60, self.y+3, 39, 7)
+    self.amazonTab = GameObject(self.x+1, self.y+3, 59, 7)
+    self.ikeaTab = GameObject(self.x+60, self.y+3, 39, 7)
     self.buttons = {}
 
     for i = 1, 4 do
@@ -47,7 +47,7 @@ function Shop:mousepressed(x, y)
                     end
                     self:setOnUI(self.items[index], index)
                 else
-                    game:createBox(Shelf(0, 0, item.width*shelves_scale, 0), 1)
+                    game:createBox(Shelf(item.width*shelves_scale, item.price), 1)
                 end
             end
         end

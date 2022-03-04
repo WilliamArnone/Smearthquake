@@ -17,8 +17,10 @@ end
 
 function Menu:main()
     State = "Main"
-    love.audio.stop()
-    --play music
+    if not sounds.menu:isPlaying() then
+        love.audio.stop()
+        sounds.menu:play()
+    end
     self.pcTarget = 0
     self.visible = true
     self.mouse = GameObject(0, 0, 0, 0, images.mouse)
@@ -70,8 +72,10 @@ end
 
 function Menu:pause()
     State = "Pause"
-    --pause music
-    --play music
+    sounds.main:pause()
+    sounds.earthquake:stop()
+    sounds.menu:play()
+
     self.pcTarget = 0
     self.visible = true
     self.mouse = GameObject(0, 0, 0, 0, images.mouse)
@@ -109,9 +113,9 @@ function Menu:mousepressed(x, y)
         return
     elseif self.start and self.start:isPointInside(x,y) then
         self:offScreen("New")
-        love.audio.stop()
-        --play music
         game = nil
+        love.audio.stop()
+        sounds.main:play()
     elseif self.howToPlay and self.howToPlay:isPointInside(x,y) then
         self:offScreen("Tutorial")
     elseif self.exit and self.exit:isPointInside(x,y) then
@@ -122,8 +126,8 @@ function Menu:mousepressed(x, y)
         love.event.quit()
     elseif self.resume and self.resume:isPointInside(x,y) then
         self:offScreen("Game")
-        --stop music
-        --play music
+        sounds.menu:stop()
+        sounds.main:play()
     end
 end
 

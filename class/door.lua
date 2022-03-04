@@ -17,6 +17,7 @@ function Door:ordered()
         self.frame = love.math.random(3, 5)
     end
     self.open = open_time
+    sounds.order:play()
 end
 
 function Door:draw()

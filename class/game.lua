@@ -20,6 +20,7 @@ function Game:createBox(item, frame)
             return
         end
     end
+    game.moneyanim = Money(item.price, "red")
     table.insert(self.boxes, newbox)
 end
 
@@ -51,9 +52,13 @@ function Game:update(dt, x, y)
         self.earthquake = self.earthquake-dt
     elseif self.nextEarthquake > 0 then
         self.nextEarthquake = self.nextEarthquake-dt
+        sounds.earthquake:stop()
     else
         self.earthquake = love.math.random(min_earthquake_duration, max_earthquake_duration)
         self.nextEarthquake = love.math.random(min_earthquake_time, max_earthquake_time)
+    end
+    if self.earthquake>0 and not sounds.earthquake:isPlaying() then
+        sounds.earthquake:play()
     end
 
 
@@ -92,6 +97,10 @@ function Game:update(dt, x, y)
     self.handdx:update(dt, x, y)
     self.handsx:update(dt, x, y)
 
+    if self.moneyanim then
+        self.moneyanim:update(dt)
+    end
+
     local lifeconst
     if self.happiness<low_happy then
         lifeconst = -dt*life_decrease
@@ -114,13 +123,13 @@ function Game:draw(isOn)
     love.graphics.draw(images.room, 0, 0)
 
     self.door:draw()
-    self.computer:draw(earthquake)
+
     --drawobjs
     for index, item in ipairs(self.placed) do
-        item:draw(earthquake, 0.5, 0.5, 0.5)
+        item:draw(earthquake)
         if item:is(Shelf) then
             for _, dec in ipairs(item.items) do
-                dec:draw(earthquake, 0, 1, 1)
+                dec:draw(earthquake)
             end
         end
     end
@@ -128,6 +137,8 @@ function Game:draw(isOn)
     for index, box in ipairs(self.boxes) do
         box:draw(earthquake)
     end
+
+    self.computer:draw(earthquake)
 
     if self.dragging.object then
         self.dragging.object:drawProjection(self.dragging.proj)
@@ -141,6 +152,9 @@ function Game:draw(isOn)
 
     --print money, happiness
     self.lifebar:draw(self.happiness, low_happy, high_happy, self.life, life_total)
+    if self.moneyanim then
+        self.moneyanim:draw()
+    end
     self.dollar:draw()
     Print("$"..self.money, self.dollar.x+5, self.dollar.y+6, "number", "darkgreen", 1)
 end
@@ -217,9 +231,6 @@ function Game:mousereleased(x, y, button)
                 table.insert(self.placed, self.dragging.object)
             end
         else
-            if self.dragging.object:is(Shelf) then
-                return
-            end
             self.dragging.object:place(false)
             table.insert(self.placed, self.dragging.object)
         end

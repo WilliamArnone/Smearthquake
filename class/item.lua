@@ -1,15 +1,15 @@
 Item = Object:extend()
 Item:implement(GameObject)
 
-function Item:new(x, y, width, height, price, happiness, instability, img, sound)
-    self.x = x
-    self.y = y
+function Item:new(width, height, price, happiness, instability, frame, sound)
+    self.x = 0
+    self.y = 0
     self.width = width
     self.height = height
     self.happiness = happiness
     self.total_instability = instability
     self.instability = 0
-    self.img = img
+    self.frame = frame
     self.sound = sound
     self.angle = 0
     self.gravity = 0
@@ -29,7 +29,11 @@ function Item:update(dt, earthquake)
 end
 
 function Item:isDropped()
-    return self.gravity>0 and self.y > gameHeight
+    local drop = self.gravity>0 and self.y > gameHeight
+    if drop then
+        self.sound:play()
+    end
+    return drop
 end
 
 function Item:canBePlaced()
@@ -59,16 +63,12 @@ function Item:place(canBePlaced, x, y)
 end
 
 function Item:drawProjection(proj)
-    local x, y
     if proj then
-        love.graphics.setColor(0, 1, 0, 0.5)
-        x, y = proj.x, proj.y
+        love.graphics.setColor(0.4, 1, 0.4, 0.7)
     else
-        love.graphics.setColor(0, 1, 0, 0.5)
-        x, y = self.x, self.y
+        love.graphics.setColor(1, 0.4, 0.4, 0.7)
     end
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("fill", x, y, self.width, self.height)
+    self:draw()
     love.graphics.setColor(1, 1, 1)
 end
 
