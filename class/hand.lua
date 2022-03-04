@@ -11,7 +11,7 @@ function Hand:new(isRight)
     self.typing = 0
     self.frame = 1
 
-    self.super.new(self, self.origin.x, self.origin.y, 32, 32, images.hands)
+    self.super.new(self, self.origin.x, self.origin.y, 32, 32, images.hands, 1)
 end
 
 
@@ -60,7 +60,7 @@ function Hand:draw(earthquake)
 
     local x, y = self.x, self.y
 
-    self.super.draw(self, earthquake and not self.locked, 0, 0, self.frame, 0, self.xdir, 1)
+    self.super.draw(self, earthquake and not self.locked, 0, 0, 0, self.xdir, 1)
 end
 
 function Hand:hoverItem(mouseX, mouseY)

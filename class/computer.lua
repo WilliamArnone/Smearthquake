@@ -42,7 +42,6 @@ function Computer:draw(earthquake)
 
     --self.super.draw(self, false, 0.2, 0.2, 0.2, dx, dy)
     if self.state == "work"then
-        frame = 1
         self.work:draw(dx, dy)
     else
         self.shop:draw(dx, dy)

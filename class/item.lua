@@ -1,21 +1,8 @@
-Item = Object:extend()
-Item:implement(GameObject)
+Item = GameObject:extend()
 
-function Item:new(width, height, price, happiness, instability, frame, sound)
-    self.x = 0
-    self.y = 0
-    self.width = width
-    self.height = height
-    self.happiness = happiness
-    self.total_instability = instability
-    self.instability = 0
-    self.frame = frame
-    self.sound = sound
-    self.angle = 0
-    self.gravity = 0
-    self.price = price
+function Item:new(x, y, width, height, img, frame, price, happiness, instability, sound)
+    GameObject.new(self, x, y, width, height, img, frame, price, happiness, instability, sound)
 end
-
 function Item:update(dt, earthquake)
     if earthquake then
         self.instability = self.instability + dt
@@ -71,17 +58,3 @@ function Item:drawProjection(proj)
     self:draw()
     love.graphics.setColor(1, 1, 1)
 end
-
--- function Item:draw(earthquake, dx, dy)
---     --self.super.draw(self, earthquake and self.gravity==0 , 1, 0, 1, dx, dy)
---     local x, y = self.x, self.y
---     if earthquake then
---         x = x + love.math.random(0, 3)
---         y = y + love.math.random(0, 3)
---     end
---     if dx and dy then
---         x = x + dx
---         y = y + dy
---     end
---     love.graphics.rectangle("line", x, y, self.width, self.height)
--- end

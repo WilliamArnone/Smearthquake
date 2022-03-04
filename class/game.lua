@@ -3,13 +3,15 @@ local min_earthquake_time = 10
 local max_earthquake_time = 3
 local min_earthquake_duration = 2
 local max_earthquake_duration = 5
-local start_money = 400
+local start_money = 100
 local life_increase = 1
 local life_decrease = 1
 local life_total = 100
 local life_start = 100
 local low_happy = 50
 local high_happy = 100
+shelves_scale = 4
+inc_ratio = 0.5
 
 function Game:createBox(item, frame)
     self.door:ordered()
@@ -26,7 +28,39 @@ end
 
 
 function Game:new()
+    local shelf, item
     self.placed = {}
+    -- shelf = Shelf(12*shelves_scale, 120, false, 1)
+    -- table.insert(self.placed, shelf)
+    -- shelf.x = 60
+    -- shelf.y = 60
+    -- item = decorations.mario()
+    -- item.x = 56
+    -- item.y = shelf.y-item.height
+    -- table.insert(shelf.items, item)
+    -- item = decorations.pop()
+    -- item.x = 72
+    -- item.y = shelf.y-item.height
+    -- table.insert(shelf.items, item)
+    -- item = decorations.rubik()
+    -- item.x = 100
+    -- item.y = shelf.y-item.height
+    -- table.insert(shelf.items, item)
+
+    -- shelf = Shelf(12*shelves_scale, 120, false, 1)
+    -- table.insert(self.placed, shelf)
+    -- shelf.x = 250
+    -- shelf.y = 90
+    -- item = decorations.tetris()
+    -- item.x = 255
+    -- item.y = shelf.y-item.height
+    -- table.insert(shelf.items, item)
+
+    -- item = posters.dnd()
+    -- item.x = 130
+    -- item.y = 2
+    -- table.insert(self.placed, item)
+
     self.boxes = {}
     self.dragging = {}
     self.earthquake = 0
@@ -106,9 +140,9 @@ function Game:update(dt, x, y)
     end
 
     local lifeconst
-    if self.happiness<low_happy then
+    if self.happiness<low_happy+self.time*inc_ratio then
         lifeconst = -dt*life_decrease
-    elseif self.happiness<high_happy then
+    elseif self.happiness<high_happy+math.pow(self.time, 2)*inc_ratio then
         lifeconst = 0
     else
         lifeconst = dt*life_increase
@@ -130,10 +164,25 @@ function Game:draw(isOn)
 
     --drawobjs
     for index, item in ipairs(self.placed) do
+
+        if item.instability < item.total_instability then
+            local perc = 1-item.instability/item.total_instability
+            love.graphics.setColor(1, 1*perc, 1*perc)
+        end
+
         item:draw(earthquake)
+        love.graphics.setColor(1, 1, 1)
+
+
         if item:is(Shelf) then
             for _, dec in ipairs(item.items) do
+                if dec.instability < dec.total_instability then
+                    local perc =  1-dec.instability/dec.total_instability
+                    love.graphics.setColor(1, 1*perc, 1*perc)
+                end
+
                 dec:draw(earthquake)
+                love.graphics.setColor(1, 1, 1)
             end
         end
     end

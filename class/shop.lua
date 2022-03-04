@@ -1,14 +1,13 @@
 Shop = GameObject:extend()
-local shelves_scale = 4
 
 function Shop:new(x, y, width, height)
-    self.super.new(self, x, y, width, height, images.shop)
+    self.super.new(self, x, y, width, height, images.shop, 1)
 
     self.items = {randomDecoration(), randomDecoration(), randomPoster(), randomPoster()}
-    self.shelves = {Shelf(40/shelves_scale, 120, true, 1),
-        Shelf(70/shelves_scale, 200, true, 1),
-        Shelf(120/shelves_scale, 340, true, 1),
-        Shelf(150/shelves_scale, 400, true, 1)
+    self.shelves = {Shelf(12, 120, true, 1),
+        Shelf(19, 200, true, 2),
+        Shelf(28, 340, true, 3),
+        Shelf(32, 400, true, 4)
     }
     self.state = "amazon"
     self.amazonTab = GameObject(self.x+1, self.y+3, 59, 7)
@@ -23,6 +22,8 @@ function Shop:new(x, y, width, height)
         self:setOnUI(item, index)
     end
     for index, item in ipairs(self.shelves) do
+        item.img = images.shopshelf
+        item.frame = index
         self:setOnUI(item, index)
     end
 end
@@ -54,8 +55,10 @@ function Shop:mousepressed(x, y)
     end
     if self.amazonTab:isPointInside(x, y) then
         self.state = "amazon"
+        self.frame = 1
     elseif self.ikeaTab:isPointInside(x, y) then
         self.state = "ikea"
+        self.frame = 2
     end
 end
 
@@ -71,11 +74,11 @@ function Shop:draw(dx, dy)
     local list
     if self.state == "amazon" then
         list = self.items
-        self.super.draw(self, false, dx, dy, 1)
+        self.super.draw(self, false, dx, dy)
     else
         list = self.shelves
-        self.super.draw(self, false, dx, dy, 2)
     end
+    self.super.draw(self, false, dx, dy)
     for index, item in ipairs(list) do
         item:draw(false, dx, dy)
         Print('$'..item.price, self.x + 11 + (8 + 34) * (index-1) + dx, self.y + 61 + dy, "number", "black")

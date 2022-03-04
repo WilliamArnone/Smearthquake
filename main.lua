@@ -160,13 +160,15 @@ function loadImages()
     images.menu:setFilter("nearest", "nearest")
 
     images.type_font = importSheet("img/type_font.png", 8, 8, 3, 9, 26)
-    images.price_font = importSheet("img/price_font.png", 4, 6, 2, 6, 11)
+    images.price_font = importSheet("img/price_font.png", 4, 6, 2, 6, 12)
     images.hands = importSheet("img/hands.png", 32, 32, 1, 8, 8)
     images.shop = importSheet("img/shop.png", 176, 89, 2, 1, 2)
     images.door = importSheet("img/door.png", 64, 108, 1, 5, 5)
     images.box = importSheet("img/boxes.png", 32, 32, 2, 2, 4)
     images.shelf = importSheet("img/shelf.png", 16, 16, 1, 2, 2)
-    images.decoration = importSheet("img/decoration.png", 32, 32, 1, 1, 1)
+    images.shopshelf = importSheet("img/shopshelf.png", 32, 8, 4, 1, 4)
+    images.decoration = importSheet("img/decoration.png", 32, 32, 4, 4, 15)
+    images.poster = importSheet("img/poster.png", 32, 32, 4, 3, 11)
 
 end
 
@@ -217,7 +219,7 @@ function Print(words, x, y, type, color, s)
             if letter == "$" then
                 frame = 11
             elseif letter == "%" then
-                frame = nil
+                frame = 12
             elseif letter == "." then
                 frame = nil
             else

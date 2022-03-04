@@ -1,10 +1,8 @@
 Decoration = Item:extend()
 
 function Decoration:new(width, height, price, happiness, instability, frame, sound)
-    self.super.new(self, width, height, price, happiness, instability, frame, sound)
-    self.img = images.decoration.image
+    self.super.new(self, 0, 0, width, height, images.decoration, frame, price, happiness, instability, sound)
 end
-
 
 function Decoration:canBePlaced()
     for index, item in ipairs(game.placed) do
@@ -17,7 +15,7 @@ function Decoration:canBePlaced()
     end
 end
 
-function Item:drawProjection(proj)
+function Decoration:drawProjection(proj)
     if proj then
         x, y = self.x, self.y
         self.x, self.y = proj.x, proj.y 

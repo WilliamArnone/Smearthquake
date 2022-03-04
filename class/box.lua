@@ -1,7 +1,7 @@
 Box = GameObject:extend()
 
 function Box:new(x, y, item, frame)
-    self.super.new(self, x, y, 32, 32, images.box)
+    self.super.new(self, x, y, 32, 32, images.box, frame)
     self.frame = frame
     self.item = item
     self.isopen = false
@@ -18,8 +18,4 @@ end
 function Box:open()
     self.isopen = true
     self.frame = self.frame+1
-end
-
-function Box:draw(earthquake)
-    self.super.draw(self, earthquake, false, false, self.frame)
 end

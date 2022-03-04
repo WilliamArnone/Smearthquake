@@ -1,11 +1,19 @@
 GameObject = Object:extend()
 
-function GameObject:new(x, y, width, height, img)
+function GameObject:new(x, y, width, height, img, frame, price, happiness, instability, sound)
     self.width = width
     self.height = height
     self.img = img
     self.x = x
     self.y = y
+    self.happiness = happiness
+    self.total_instability = instability
+    self.instability = 0
+    self.frame = frame
+    self.sound = sound
+    self.angle = 0
+    self.gravity = 0
+    self.price = price
 end
 
 function GameObject:isPointInside(x, y)
@@ -19,7 +27,7 @@ function GameObject:collide(obj)
         obj.y + obj.height > self.y
 end
 
-function GameObject:draw(earthquake, dx, dy, frame, angle, sx, sy)
+function GameObject:draw(earthquake, dx, dy, angle, sx, sy)
     local x, y = self.x, self.y
     if earthquake then
         x = x + love.math.random(-2, 2)
@@ -35,7 +43,10 @@ function GameObject:draw(earthquake, dx, dy, frame, angle, sx, sy)
     if not self.img then
         love.graphics.rectangle("line", x, y, self.width, self.height)
     else
-        if frame then
+        if self.frame then
+            if self.frame then
+                frame = self.frame
+            end
             love.graphics.draw(self.img.image, self.img.frames[frame], x, y, angle, sx, sy)
         else
             love.graphics.draw(self.img, x, y, angle, sx, sy)
