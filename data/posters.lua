@@ -5,9 +5,9 @@ posters_ratio = {}
 function initPosters()
     posters = {}
     --                                          width, height, price, happiness, instability, img, sound
-    posters["monnalisa"] = function () return Poster(26, 32, 1000, 400, 40, 1, sounds.hard) end      --0.3
-    posters["specchiodellebrame"] = function () return Poster(17, 32, 500, 240, 30, 2, sounds.glass) end  --0.34
-    posters["munch"] = function () return Poster(30, 32, 700, 320, 35, 3, sounds.hard) end      --0.32
+    posters["monnalisa"] = function () return Poster(26, 32, 400, 300, 45, 1, sounds.hard) end      --0.3
+    posters["specchiodellebrame"] = function () return Poster(17, 32, 300, 240, 40, 2, sounds.glass) end  --0.34
+    posters["munch"] = function () return Poster(30, 32, 350, 260, 45, 3, sounds.hard) end      --0.32
 
     posters["naruto"] = function () return Poster(32, 32, 30, 40, 15, 5, sounds.hard) end  --1
     posters["dnd"] = function () return Poster(25, 32, 30, 20, 30, 8, sounds.hard) end  --0.5

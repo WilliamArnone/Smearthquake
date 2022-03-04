@@ -17,14 +17,14 @@ function initDecorations()
     
     decorations["mario"] = function () return Decoration(16, 16, 90, 100, 40, 8, sounds.hard) end
     
-    decorations["pop"] = function () return Decoration(28, 32, 200, 320, 10, 5, sounds.hard) end
-    decorations["venusaur"] = function () return Decoration(24, 21, 200, 200, 5, 11, sounds.hard) end
+    decorations["pop"] = function () return Decoration(28, 32, 200, 320, 15, 5, sounds.hard) end
+    decorations["venusaur"] = function () return Decoration(24, 21, 200, 200, 15, 11, sounds.hard) end
     
     
-    decorations["triforce"] = function () return Decoration(18, 10, 300, 550, 30, 10, sounds.hard) end
-    decorations["layton"] = function () return Decoration(16, 13, 500, 700, 20, 9, sounds.hard) end
-    decorations["sparasemi"] = function () return Decoration(22, 28, 550, 800, 10, 3, sounds.glass) end
-    decorations["ds"] = function () return Decoration(22, 27, 600, 1200, 10, 12, sounds.glass) end
+    decorations["triforce"] = function () return Decoration(18, 10, 250, 350, 30, 10, sounds.hard) end
+    decorations["layton"] = function () return Decoration(16, 13, 300, 400, 20, 9, sounds.hard) end
+    decorations["sparasemi"] = function () return Decoration(22, 28, 350, 450, 10, 3, sounds.glass) end
+    decorations["ds"] = function () return Decoration(22, 27, 400, 550, 10, 12, sounds.glass) end
     
     decorations["rubik"] = function () return Decoration(13, 12, 1, 5000, 5, 4, sounds.hard) end
 
