@@ -94,6 +94,9 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button)
+    if State == "Splash" then
+        return
+    end
     x, y = x/scaleFactorX, y/scaleFactorY
     if State == "Game" then
         game:mousepressed(math.floor(x), math.floor(y), button)
@@ -103,6 +106,9 @@ function love.mousepressed(x, y, button)
 end
 
 function love.mousereleased(x, y, button, istouch)
+    if State == "Splash" then
+        return
+    end
     x, y = x/scaleFactorX, y/scaleFactorY
     if State =="Game" then
         game:mousereleased(math.floor(x), math.floor(y), button)
@@ -110,6 +116,9 @@ function love.mousereleased(x, y, button, istouch)
 end
 
 function love.keypressed(key)
+    if State == "Splash" then
+        return
+    end
     if State == "Game" then
         if key == "escape" or key == "return" then
             GameMenu:pause()
