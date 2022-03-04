@@ -9,6 +9,7 @@ if launch_type == "test" or launch_type == "debug" then
 end
 
 function love.load()
+    local o_ten_one = require "libraries.o-ten-one"
     lume = require "libraries.lume"
     Object = require "libraries.classic"
     --Camera = require 'libraries.Camera'
@@ -31,6 +32,13 @@ function love.load()
     require "data.posters"
     require "data.words"
 
+    splash = o_ten_one()
+    State = "Splash"
+    splash.onDone = function()
+        GameMenu = Menu()
+        GameMenu:main()
+    end
+
     love.mouse.setVisible(false)
 
     gameWidth = 192*2
@@ -40,8 +48,6 @@ function love.load()
 
     loadImages()
     loadSongs()
-    GameMenu = Menu()
-    GameMenu:main()
 
 
     initDecorations()
@@ -52,6 +58,12 @@ function love.load()
 end
 
 function love.update(dt)
+
+    if State == "Splash" then
+        splash:update(dt)
+        return
+    end
+
     local x, y = love.mouse.getX()/scaleFactorX, love.mouse.getY()/scaleFactorY
     GameMenu:update(dt, x, y)
     if State == "New"then
@@ -67,6 +79,10 @@ function love.update(dt)
 end
 
 function love.draw()
+    if State == "Splash" then
+        splash:draw()
+        return
+    end
     love.graphics.scale(scaleFactorX,scaleFactorY)
     love.graphics.setDefaultFilter("nearest", "nearest")
     if game then
