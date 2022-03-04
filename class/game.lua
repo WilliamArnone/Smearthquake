@@ -30,36 +30,36 @@ end
 function Game:new()
     local shelf, item
     self.placed = {}
-    -- shelf = Shelf(12*shelves_scale, 120, false, 1)
-    -- table.insert(self.placed, shelf)
-    -- shelf.x = 60
-    -- shelf.y = 60
-    -- item = decorations.mario()
-    -- item.x = 56
-    -- item.y = shelf.y-item.height
-    -- table.insert(shelf.items, item)
-    -- item = decorations.pop()
-    -- item.x = 72
-    -- item.y = shelf.y-item.height
-    -- table.insert(shelf.items, item)
-    -- item = decorations.rubik()
-    -- item.x = 100
-    -- item.y = shelf.y-item.height
-    -- table.insert(shelf.items, item)
+    shelf = Shelf(12*shelves_scale, 120, false, 1)
+    table.insert(self.placed, shelf)
+    shelf.x = 60
+    shelf.y = 60
+    item = decorations.vase()
+    item.x = 56
+    item.y = shelf.y-item.height
+    table.insert(shelf.items, item)
+    item = decorations.vase()
+    item.x = 72
+    item.y = shelf.y-item.height
+    table.insert(shelf.items, item)
+    item = decorations.vase()
+    item.x = 100
+    item.y = shelf.y-item.height
+    table.insert(shelf.items, item)
 
-    -- shelf = Shelf(12*shelves_scale, 120, false, 1)
-    -- table.insert(self.placed, shelf)
-    -- shelf.x = 250
-    -- shelf.y = 90
-    -- item = decorations.tetris()
-    -- item.x = 255
-    -- item.y = shelf.y-item.height
-    -- table.insert(shelf.items, item)
+    shelf = Shelf(12*shelves_scale, 120, false, 1)
+    table.insert(self.placed, shelf)
+    shelf.x = 250
+    shelf.y = 90
+    item = decorations.mario()
+    item.x = 255
+    item.y = shelf.y-item.height
+    table.insert(shelf.items, item)
 
-    -- item = posters.dnd()
-    -- item.x = 130
-    -- item.y = 2
-    -- table.insert(self.placed, item)
+    item = posters.yellowspace()
+    item.x = 130
+    item.y = 2
+    table.insert(self.placed, item)
 
     self.boxes = {}
     self.dragging = {}
