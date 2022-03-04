@@ -166,6 +166,7 @@ function loadImages()
     images.door = importSheet("img/door.png", 64, 108, 1, 5, 5)
     images.box = importSheet("img/boxes.png", 32, 32, 2, 2, 4)
     images.shelf = importSheet("img/shelf.png", 16, 16, 1, 2, 2)
+    images.decoration = importSheet("img/decoration.png", 32, 32, 1, 1, 1)
 
 end
 

@@ -1,5 +1,11 @@
 Decoration = Item:extend()
 
+function Decoration:new(width, height, price, happiness, instability, frame, sound)
+    self.super.new(self, width, height, price, happiness, instability, frame, sound)
+    self.img = images.decoration.image
+end
+
+
 function Decoration:canBePlaced()
     for index, item in ipairs(game.placed) do
         if item:is(Shelf) and self:collide(item) then
