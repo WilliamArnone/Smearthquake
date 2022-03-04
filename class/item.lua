@@ -64,9 +64,9 @@ end
 
 function Item:drawProjection(proj)
     if proj then
-        love.graphics.setColor(0.4, 1, 0.4, 0.7)
+        love.graphics.setColor(0.4, 1, 0.3, 0.7)
     else
-        love.graphics.setColor(1, 0.4, 0.4, 0.7)
+        love.graphics.setColor(1, 0.4, 0.3, 0.7)
     end
     self:draw()
     love.graphics.setColor(1, 1, 1)

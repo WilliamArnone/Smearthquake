@@ -13,6 +13,7 @@ local high_happy = 100
 
 function Game:createBox(item, frame)
     self.door:ordered()
+    game.moneyanim = Money(item.price, "red")
     newbox = Box(love.math.random(64), love.math.random(gameHeight-36, gameHeight-25), item, frame)
     for index, box in ipairs(self.boxes) do
         if box.y > newbox.y then
@@ -20,7 +21,6 @@ function Game:createBox(item, frame)
             return
         end
     end
-    game.moneyanim = Money(item.price, "red")
     table.insert(self.boxes, newbox)
 end
 
@@ -35,16 +35,20 @@ function Game:new()
     self.door = Door()
     self.handdx = Hand(true)
     self.handsx = Hand(false)
+    self.charCounter = {total = 0, correct = 0, streak = 0, maxstreak = 0}
 
     self.money = start_money
     self.happiness = 0
     self.life = life_start
     self.lifebar = Lifebar()
+    self.time = 0
+    self.moneyspent = 0
     self.dollar = GameObject(6, 16, 0, 0, images.money)
 end
 
 
 function Game:update(dt, x, y)
+    self.time = self.time+dt
     self.happiness = 0
 
     --earthquake timer
@@ -122,7 +126,7 @@ function Game:draw(isOn)
 
     love.graphics.draw(images.room, 0, 0)
 
-    self.door:draw()
+    self.door:draw(earthquake)
 
     --drawobjs
     for index, item in ipairs(self.placed) do

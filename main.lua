@@ -199,11 +199,17 @@ function Print(words, x, y, type, color, s)
         if type=="number" then
             if letter == "$" then
                 frame = 11
+            elseif letter == "%" then
+                frame = nil
+            elseif letter == "." then
+                frame = nil
             else
                 frame = tonumber(letter)+1
             end
         else
             if letter == " " then
+                frame = nil
+            elseif letter == ":" then
                 frame = nil
             else
                 frame = (string.byte(letter))%32

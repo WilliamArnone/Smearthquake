@@ -20,7 +20,12 @@ function Door:ordered()
     sounds.order:play()
 end
 
-function Door:draw()
+function Door:draw(earthquake)
+    local dx, dy = 0, 0
+    if earthquake then
+        dx = love.math.random(-3, 0)
+        dy = love.math.random(-2, 2)
+    end
     local frame
     if self.open>0 then
         frame = self.frame
@@ -28,5 +33,5 @@ function Door:draw()
         frame = 1
     end
 
-    self.super.draw(self, false, 0, 0, frame)
+    self.super.draw(self, false, dx, dy, frame)
 end

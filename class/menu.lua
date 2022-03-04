@@ -1,5 +1,5 @@
 Menu = Object:extend()
-
+local fontsize = 10
 function Menu:new()
     self.visible = true
     self.pc = GameObject(0, 0, gameWidth, gameHeight, images.menu)
@@ -13,6 +13,12 @@ function Menu:new()
     self.flash = 0
     self.time = 0
     self.mouse = nil
+
+    self.uimoney_d = GameObject(25, 35, fontsize*5, 42)
+    self.uichartot_d = GameObject(85, 35, fontsize*10, 42)
+    self.uistreak_d = GameObject(195, 35, fontsize*7, 42)
+    self.uicharcor_d = GameObject(280, 35, fontsize*8, 42)
+
 end
 
 function Menu:main()
@@ -25,8 +31,12 @@ function Menu:main()
     self.visible = true
     self.mouse = GameObject(0, 0, 0, 0, images.mouse)
     self.logo = GameObject(gameWidth/2-64, gameHeight/2-64, 128, 64, images.logo)
-    self.start = GameObject(gameWidth/2-10/2*8, gameHeight/2+26, 10*8, 8)
-    self.quit = GameObject(gameWidth/2-10/2*10, gameHeight/2+48, 10*10, 8)
+    self.start = GameObject(gameWidth/2-fontsize/2*8, gameHeight/2+26, fontsize*8, 8)
+    self.quit = GameObject(gameWidth/2-fontsize/2*10, gameHeight/2+48, fontsize*10, 8)
+    self.uistreak = nil
+    self.uimoney = nil
+    self.uichartot = nil
+    self.uicharcor = nil
 end
 
 function Menu:update(dt, x, y)
@@ -67,6 +77,19 @@ function Menu:update(dt, x, y)
         if self.resume then
             self.resume.mouseOn =  self.resume:isPointInside(x,y)
         end
+
+        if self.uistreak then
+            self.uistreak.mouseOn =  self.uistreak:isPointInside(x,y)
+        end
+        if self.uimoney then
+            self.uimoney.mouseOn =  self.uimoney:isPointInside(x,y)
+        end
+        if self.uichartot then
+            self.uichartot.mouseOn =  self.uichartot:isPointInside(x,y)
+        end
+        if self.uicharcor then
+            self.uicharcor.mouseOn =  self.uicharcor:isPointInside(x,y)
+        end
     end
 end
 
@@ -79,8 +102,13 @@ function Menu:pause()
     self.pcTarget = 0
     self.visible = true
     self.mouse = GameObject(0, 0, 0, 0, images.mouse)
-    self.resume = GameObject(gameWidth/2-10/2*6, gameHeight/2+26, 10*6, 8)
-    self.exit = GameObject(gameWidth/2-10/2*4, gameHeight/2+48, 10*4, 8)
+    self.resume = GameObject(gameWidth/2-fontsize/2*6, gameHeight/2+26, fontsize*6, 8)
+    self.exit = GameObject(gameWidth/2-fontsize/2*4, gameHeight/2+48, fontsize*4, 8)
+    
+    self.uistreak = self.uistreak_d
+    self.uimoney = self.uimoney_d
+    self.uichartot = self.uichartot_d
+    self.uicharcor = self.uicharcor_d
 end
 
 function  Menu:gameOver()
@@ -92,8 +120,13 @@ function  Menu:gameOver()
     self.pcTarget = 0
     self.visible = true
     self.mouse = GameObject(0, 0, 0, 0, images.mouse)
-    self.start = GameObject(gameWidth/2-10/2*8, gameHeight/2+26, 10*8, 8)
-    self.exit = GameObject(gameWidth/2-10/2*4, gameHeight/2+48, 10*4, 8)
+    self.start = GameObject(gameWidth/2-fontsize/2*8, gameHeight/2+26, fontsize*8, 8)
+    self.exit = GameObject(gameWidth/2-fontsize/2*4, gameHeight/2+48, fontsize*4, 8)
+
+    self.uistreak = self.uistreak_d
+    self.uimoney = self.uimoney_d
+    self.uichartot = self.uichartot_d
+    self.uicharcor = self.uicharcor_d
 end
 
 function Menu:offScreen(state)
@@ -105,6 +138,10 @@ function Menu:offScreen(state)
     self.quit = nil
     self.resume = nil
     self.mouse = nil
+    self.uistreak = nil
+    self.uimoney = nil
+    self.uichartot = nil
+    self.uicharcor = nil
     State = state
 end
 
@@ -193,6 +230,57 @@ function Menu:draw()
             end
             Print("resume", x, y, "type", color)
         end
+
+
+        if game then
+            if self.uimoney then
+                local x, y = self.uimoney.x, self.uimoney.y
+                if self.uimoney.mouseOn then
+                    x = x + love.math.random(-2, 2)
+                    y = y + love.math.random(-2, 2)
+                end
+                Print("money", x, y, "type", "white")
+                Print("spent:", x, y + 10, "type", "white")
+                Print("$"..game.moneyspent, x+self.uimoney.width/2-fontsize/2*(#(tostring(game.moneyspent))+1), y+30, "number", "white", 2)
+            end
+            if self.uichartot then
+                local x, y = self.uichartot.x, self.uichartot.y
+                if self.uichartot.mouseOn then
+                    x = x + love.math.random(-2, 2)
+                    y = y + love.math.random(-2, 2)
+                end
+                Print("characters", x, y, "type", "white")
+                Print("typed:", x, y+10, "type", "white")
+                Print(game.charCounter.total, x+self.uichartot.width/2-fontsize/2*(#(tostring(game.charCounter.total))), y+30, "number", "white", 2)
+            end
+            if self.uistreak then
+                local x, y = self.uistreak.x, self.uistreak.y
+                if self.uistreak.mouseOn then
+                    x = x + love.math.random(-2, 2)
+                    y = y + love.math.random(-2, 2)
+                end
+                Print("longest", x, y, "type", "white")
+                Print("streak:", x, y+10, "type", "white")
+                Print(game.charCounter.maxstreak, x+self.uistreak.width/2-fontsize/2*(#(tostring(game.charCounter.maxstreak))), y+30, "number", "white", 2)
+            end
+            if self.uicharcor then
+                local x, y = self.uicharcor.x, self.uicharcor.y
+                if self.uicharcor.mouseOn then
+                    x = x + love.math.random(-2, 2)
+                    y = y + love.math.random(-2, 2)
+                end
+                Print("Accuracy:", x, y, "type", "white")
+                local percentage
+                if game.charCounter.total==0 then
+                    percentage = 0
+                else
+                    percentage = math.floor(game.charCounter.correct/game.charCounter.total*100)
+                end
+                Print(percentage.."%", x+self.uicharcor.width/2-fontsize/2*3, y+30, "number", "white", 2)
+            end
+        end
+
+
         if self.flash>0 then
             love.graphics.rectangle("fill", self.pc.x, self.pc.y+10, gameWidth, gameHeight-20)
         end

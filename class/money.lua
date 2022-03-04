@@ -7,6 +7,9 @@ function Money:new(value, color)
     self.value = value
     self.color = color
     sounds.money:play()
+    if color == "red" then
+        game.moneyspent = game.moneyspent + value
+    end
 end
 
 function Money:update(dt)

@@ -7,8 +7,16 @@ function Work:new(x, y, width, height)
 end
 
 function Work:keypressed(key)
+    game.charCounter.total = game.charCounter.total+1
     if key == string.sub(self.word, self.charindex+1, self.charindex+1) then
         self.charindex = self.charindex+1
+        game.charCounter.correct = game.charCounter.correct+ 1
+        game.charCounter.streak = game.charCounter.streak + 1
+        if game.charCounter.streak > game.charCounter.maxstreak then
+            game.charCounter.maxstreak = game.charCounter.streak
+        end
+    else
+        game.charCounter.streak = 0
     end
     if self.charindex>=string.len(self.word) then
         game.money = game.money + #self.word
