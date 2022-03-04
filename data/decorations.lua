@@ -18,7 +18,7 @@ function initDecorations()
     decorations["mario"] = function () return Decoration(16, 16, 90, 80, 40, 8, sounds.hard) end
     
     decorations["pop"] = function () return Decoration(28, 32, 200, 250, 10, 5, sounds.hard) end
-    decorations["venusaur"] = function () return Decoration(24, 200, 200, 15, 5, 11, sounds.hard) end
+    decorations["venusaur"] = function () return Decoration(24, 21, 200, 15, 5, 11, sounds.hard) end
     
     
     decorations["triforce"] = function () return Decoration(18, 10, 300, 400, 30, 10, sounds.hard) end
@@ -30,21 +30,21 @@ function initDecorations()
 
 
     decoration_ratio = {}
-    decoration_ratio["vase"] = 1
-    decoration_ratio["cubeportal"] = 1
-    decoration_ratio["sparasemi"] = 1
+    decoration_ratio["vase"] = 15
+    decoration_ratio["cubeportal"] = 10
+    decoration_ratio["sparasemi"] = 3
     decoration_ratio["rubik"] = 1
-    decoration_ratio["pop"] = 1
-    decoration_ratio["vault"] = 1
-    decoration_ratio["waterman"] = 1
-    decoration_ratio["mario"] = 1
-    decoration_ratio["layton"] = 1
-    decoration_ratio["triforce"] = 1
-    decoration_ratio["venusaur"] = 1
-    decoration_ratio["ds"] = 1
-    decoration_ratio["globe"] = 1
-    decoration_ratio["tetris"] = 1
-    decoration_ratio["amongus"] = 1
+    decoration_ratio["pop"] = 5
+    decoration_ratio["vault"] = 10
+    decoration_ratio["waterman"] = 10
+    decoration_ratio["mario"] = 7
+    decoration_ratio["layton"] = 3
+    decoration_ratio["triforce"] = 3
+    decoration_ratio["venusaur"] = 5
+    decoration_ratio["ds"] = 2
+    decoration_ratio["globe"] = 15
+    decoration_ratio["tetris"] = 9
+    decoration_ratio["amongus"] = 9
 end
 
 function randomDecoration()

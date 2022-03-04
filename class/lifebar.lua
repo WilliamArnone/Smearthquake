@@ -11,9 +11,9 @@ end
 function Lifebar:draw(happiness, low_happiness, high_happiness, life, maxlife)
     love.graphics.draw(self.img, self.mainFrame, self.x, self.y)
     local frame
-    if happiness < low_happiness then
+    if happiness < self.happiness<low_happiness+game.time*inc_ratio then
         frame = 1
-    elseif happiness < high_happiness then
+    elseif happiness < self.happiness<high_happiness+2*game.time*inc_ratio then
         frame = 2
     else
         frame = 3

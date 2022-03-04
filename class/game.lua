@@ -142,7 +142,7 @@ function Game:update(dt, x, y)
     local lifeconst
     if self.happiness<low_happy+self.time*inc_ratio then
         lifeconst = -dt*life_decrease
-    elseif self.happiness<high_happy+math.pow(self.time, 2)*inc_ratio then
+    elseif self.happiness<high_happy+2*self.time*inc_ratio then
         lifeconst = 0
     else
         lifeconst = dt*life_increase
