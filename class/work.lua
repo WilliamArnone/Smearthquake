@@ -18,11 +18,11 @@ function Work:keypressed(key)
     else
         game.charCounter.streak = 0
     end
-    if self.charindex>=string.len(self.word) then
+    if self.charindex>=#self.word then
         game.money = game.money + #self.word
+        game.moneyanim = Money(#self.word, "darkgreen")
         self.word = randomWord()
         self.charindex = 0
-        game.moneyanim = Money(#self.word, "darkgreen")
     end
 end
 
