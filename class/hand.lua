@@ -10,6 +10,7 @@ function Hand:new(isRight)
     self.origin = {x = gameWidth/2+26*self.xdir, y = gameHeight-16}
     self.typing = 0
     self.frame = 1
+    self.reached = false;
 
     self.super.new(self, self.origin.x, self.origin.y, 32, 32, images.hands, 1)
 end
@@ -37,7 +38,11 @@ function Hand:update(dt, mouseX, mouseY)
         else
             self.frame = 6
         end
+
+        self.reached = self.reached or (math.pow(self.x - target.x, 2) + math.pow(self.y - target.y, 2) < 4)
+        
     else
+        self.reached = false;
         target = self.origin
         self.typing = self.typing-dt
         if self.typing <=0 then
@@ -45,8 +50,16 @@ function Hand:update(dt, mouseX, mouseY)
         end
     end
     --local norm = lume.distance(self.x, self.y, target.x, target.y)
-    self.x = self.x+(target.x-self.x)*dt*speed
-    self.y = self.y+(target.y-self.y)*dt*speed
+    local real_speed = speed
+    if math.pow(self.x - target.x, 2) + math.pow(self.y - target.y, 2) < 1000 then
+        real_speed = real_speed * 4
+    end
+    self.x = self.x+(target.x-self.x)*dt*real_speed
+    self.y = self.y+(target.y-self.y)*dt*real_speed
+    if self.reached then
+        self.x = target.x
+        self.y = target.y
+    end
 end
 
 function Hand:type()
